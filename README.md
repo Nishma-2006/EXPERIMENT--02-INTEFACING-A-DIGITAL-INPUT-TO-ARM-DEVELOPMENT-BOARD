@@ -53,11 +53,12 @@ The full form of an ARM is an advanced reduced instruction set computer (RISC) m
 ## STM 32 CUBE PROGRAM :
 
 ```
-
 #include "main.h"
-#include<stdbool.h>
-bool a;
 
+
+#include <stdbool.h>
+void push_button();
+bool button_status;
 
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -65,106 +66,37 @@ static void MX_GPIO_Init(void);
 int main(void)
 {
   
-
- 
   HAL_Init();
 
 
   SystemClock_Config();
+
+
   MX_GPIO_Init();
- 
 
- 
   while (1)
   {
-	  a=HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13);
-	  if(a==0)
-	  {
-		  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5, GPIO_PIN_SET);
-		  HAL_Delay(1000);
-	  }
-	  else{
-		  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5, GPIO_PIN_RESET);
-		  HAL_Delay(1000);
-
-	  }
-  }
-
-}
-
-
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
+    
+     push_button();
   
-  __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
-  
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
- 
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-static void MX_GPIO_Init(void)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-
-  
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
-
-
-  GPIO_InitStruct.Pin = GPIO_PIN_13;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-
-  GPIO_InitStruct.Pin = GPIO_PIN_5;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-}
-
-void Error_Handler(void)
-{
- 
-  __disable_irq();
-  while (1)
-  {
   }
   
 }
 
-#ifdef  USE_FULL_ASSERT
-
-void assert_failed(uint8_t *file, uint32_t line)
+void push_button()
 {
- 
+	button_status=HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13);
+	if(button_status==0)
+	{
+		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_SET);
+		HAL_Delay(500);
+
+	}
+	else
+	{
+		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_RESET);
+	}
 }
-#endif 
 
 
 ```
@@ -172,11 +104,15 @@ void assert_failed(uint8_t *file, uint32_t line)
 
 ## Output  :
 
-<img width="1917" height="1124" alt="EX2-02" src="https://github.com/user-attachments/assets/45a46409-9e4c-4ffc-993f-d06a5e0ac51e" />
 
- 
-## layout of the circuit 
- <img width="924" height="660" alt="image" src="https://github.com/user-attachments/assets/e855fc92-a1f4-457a-9121-9a76708849e8" />
+
+
+<img width="1600" height="739" alt="WhatsApp Image 2026-05-15 at 1 58 37 PM" src="https://github.com/user-attachments/assets/50938885-91de-4581-8218-cbaeefd22340" />
+
+
+  
+<img width="1600" height="739" alt="WhatsApp Image 2026-05-15 at 1 58 38 PM" src="https://github.com/user-attachments/assets/b1b00164-751f-4661-8a5a-d83440963417" />
+
 
  
 ## Result :
